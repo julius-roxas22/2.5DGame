@@ -10,7 +10,7 @@ namespace IndieGameDev
 
         public override void OnEnterAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
         {
-
+            animator.SetBool(TransitionParameters.Jump.ToString(), false);
         }
 
         public override void OnUpdateAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
@@ -19,6 +19,11 @@ namespace IndieGameDev
             {
                 animator.SetBool(TransitionParameters.Move.ToString(), false);
                 return;
+            }
+
+            if (characterControl.Jump)
+            {
+                animator.SetBool(TransitionParameters.Jump.ToString(), true);
             }
 
             if (characterControl.MoveRight)

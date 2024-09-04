@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eb497c559ba064a4e894b8bfb409c0d6, type: 3}
-  m_Name: PlayerWalk_Move
+  m_Script: {fileID: 11500000, guid: d3fffcaa8229ee340b43490d9bcef78a, type: 3}
+  m_Name: Player_Jump_Prep_Forcetransition
   m_EditorClassIdentifier: 
-  Speed: 2
+  TransitionTiming: 0.8
