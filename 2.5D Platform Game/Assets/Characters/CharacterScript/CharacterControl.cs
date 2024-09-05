@@ -23,6 +23,8 @@ namespace IndieGameDev
         public float GravityMultiplier;
         public float PullMultiplier;
 
+        public List<Collider> RagdollParts = new List<Collider>();
+
         public bool Jump;
         public bool MoveRight;
         public bool MoveLeft;
@@ -43,7 +45,44 @@ namespace IndieGameDev
 
         private void Awake()
         {
+            SetUpRagdollParts();
             SetUpSphereEdge();
+        }
+
+        private void SetUpRagdollParts()
+        {
+            Collider[] colliders = GetComponentsInChildren<Collider>();
+
+            foreach (Collider col in colliders)
+            {
+                if (col.gameObject != gameObject)
+                {
+                    col.isTrigger = true;
+                    RagdollParts.Add(col);
+                }
+            }
+        }
+
+        //private IEnumerator Start()
+        //{
+        //    yield return new WaitForSeconds(5f);
+        //    RIGID_BODY.AddForce(Vector3.up * 200f);
+        //    yield return new WaitForSeconds(0.5f);
+        //    TurnOnRagdoll();
+        //}
+
+        public void TurnOnRagdoll()
+        {
+            RIGID_BODY.velocity = Vector3.zero;
+            RIGID_BODY.useGravity = false;
+            GetComponent<BoxCollider>().enabled = false;
+            skinnedMesh.avatar = null;
+
+            foreach (Collider col in RagdollParts)
+            {
+                col.attachedRigidbody.velocity = Vector3.zero;
+                col.isTrigger = false;
+            }
         }
 
         private void FixedUpdate()

@@ -10,6 +10,7 @@ namespace IndieGameDev
         [SerializeField] private float BlockDistance;
         [SerializeField] private AnimationCurve SpeedGraph;
         [SerializeField] private float Speed;
+        private bool Self;
 
         public override void OnEnterAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
         {
@@ -67,7 +68,19 @@ namespace IndieGameDev
                 Debug.DrawRay(o.transform.position, o.transform.forward * BlockDistance, Color.red);
                 if (Physics.Raycast(o.transform.position, o.transform.forward, out hit, BlockDistance))
                 {
-                    return true;
+                    foreach (Collider col in control.RagdollParts)
+                    {
+                        if (col.gameObject == hit.collider.gameObject)
+                        {
+                            Self = true;
+                            break;
+                        }
+                    }
+
+                    if (!Self)
+                    {
+                        return true;
+                    }
                 }
             }
             return false;
