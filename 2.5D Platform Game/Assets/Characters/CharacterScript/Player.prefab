@@ -13,8 +13,9 @@ GameObject:
   - component: {fileID: 3935673521293835150}
   - component: {fileID: 9117049964211060120}
   - component: {fileID: 3092976030782816588}
+  - component: {fileID: 8411816606039489602}
   m_Layer: 0
-  m_Name: MainCharacter
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97,16 +98,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementSpeed: 2
-  skinnedMesh: {fileID: 1200954274819287569}
+  skinnedMeshAnimator: {fileID: 1200954274819287569}
   mat: {fileID: 2100000, guid: 5e6b9a19c6f54444081a7992c254bc3a, type: 2}
   SphereEdgePrefab: {fileID: 1244673664232890433, guid: dfbe63df0d5a5634daaf96484beffb35, type: 3}
   BottomSpheres: []
   FrontSpheres: []
   GravityMultiplier: 0
   PullMultiplier: 0
+  RagdollParts: []
+  CollidingParts: []
   Jump: 0
   MoveRight: 0
   MoveLeft: 0
+  Attack: 0
 --- !u!114 &3092976030782816588
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +121,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 991764e5b5c8e074699931c2e22e3679, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8411816606039489602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 869473416010315978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 50f89c90abe42d5429318964c4d04278, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &1200954274826674033

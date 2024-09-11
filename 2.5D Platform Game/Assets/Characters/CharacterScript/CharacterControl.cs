@@ -16,7 +16,7 @@ namespace IndieGameDev
     public class CharacterControl : MonoBehaviour
     {
         public float movementSpeed;
-        public Animator skinnedMesh;
+        public Animator skinnedMeshAnimator;
         public Material mat;
         public GameObject SphereEdgePrefab;
         public List<GameObject> BottomSpheres = new List<GameObject>();
@@ -25,6 +25,7 @@ namespace IndieGameDev
         public float PullMultiplier;
 
         public List<Collider> RagdollParts = new List<Collider>();
+        public List<Collider> CollidingParts = new List<Collider>();
 
         public bool Jump;
         public bool MoveRight;
@@ -47,8 +48,22 @@ namespace IndieGameDev
 
         private void Awake()
         {
+            bool SwitchBack = false;
+
+            if (!IsFacingForward())
+            {
+                SwitchBack = true;
+            }
+
+            SetFaceForward(true);
+
             SetUpRagdollParts();
             SetUpSphereEdge();
+
+            if (SwitchBack)
+            {
+                SetFaceForward(false);
+            }
         }
 
         private void SetUpRagdollParts()
@@ -78,7 +93,7 @@ namespace IndieGameDev
             RIGID_BODY.velocity = Vector3.zero;
             RIGID_BODY.useGravity = false;
             GetComponent<BoxCollider>().enabled = false;
-            skinnedMesh.avatar = null;
+            skinnedMeshAnimator.avatar = null;
 
             foreach (Collider col in RagdollParts)
             {
@@ -97,6 +112,40 @@ namespace IndieGameDev
             if (RIGID_BODY.velocity.y > 0f && !Jump)
             {
                 RIGID_BODY.velocity -= Vector3.up * PullMultiplier;
+            }
+        }
+
+        private void OnTriggerEnter(Collider col)
+        {
+            if (RagdollParts.Contains(col))
+            {
+                return;
+            }
+
+            CharacterControl control = col.transform.root.GetComponent<CharacterControl>();
+
+            if (null == control)
+            {
+                return;
+            }
+
+            if (col.gameObject == control.gameObject)
+            {
+                return;
+            }
+
+            if (!CollidingParts.Contains(col))
+            {
+                CollidingParts.Add(col);
+            }
+
+        }
+
+        private void OnTriggerExit(Collider col)
+        {
+            if (CollidingParts.Contains(col))
+            {
+                CollidingParts.Remove(col);
             }
         }
 
@@ -161,6 +210,30 @@ namespace IndieGameDev
                 {
                     r.material = mat;
                 }
+            }
+        }
+
+        public void SetFaceForward(bool isFacing)
+        {
+            if (isFacing)
+            {
+                transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                transform.rotation = Quaternion.Euler(0f, 180f, 0);
+            }
+        }
+
+        public bool IsFacingForward()
+        {
+            if (transform.forward.z > 0f)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
