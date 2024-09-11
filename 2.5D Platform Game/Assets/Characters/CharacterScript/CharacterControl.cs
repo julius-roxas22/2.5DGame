@@ -76,6 +76,10 @@ namespace IndieGameDev
                 {
                     col.isTrigger = true;
                     RagdollParts.Add(col);
+                    if (null == GetComponent<TriggerDetector>())
+                    {
+                        col.gameObject.AddComponent<TriggerDetector>();
+                    }
                 }
             }
         }
@@ -114,41 +118,6 @@ namespace IndieGameDev
                 RIGID_BODY.velocity -= Vector3.up * PullMultiplier;
             }
         }
-
-        private void OnTriggerEnter(Collider col)
-        {
-            if (RagdollParts.Contains(col))
-            {
-                return;
-            }
-
-            CharacterControl control = col.transform.root.GetComponent<CharacterControl>();
-
-            if (null == control)
-            {
-                return;
-            }
-
-            if (col.gameObject == control.gameObject)
-            {
-                return;
-            }
-
-            if (!CollidingParts.Contains(col))
-            {
-                CollidingParts.Add(col);
-            }
-
-        }
-
-        private void OnTriggerExit(Collider col)
-        {
-            if (CollidingParts.Contains(col))
-            {
-                CollidingParts.Remove(col);
-            }
-        }
-
         private void SetUpSphereEdge()
         {
             BoxCollider box = GetComponent<BoxCollider>();

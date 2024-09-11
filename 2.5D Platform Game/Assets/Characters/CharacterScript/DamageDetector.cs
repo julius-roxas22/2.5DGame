@@ -84,6 +84,8 @@ namespace IndieGameDev
             //Debug.Log(info.Attacker.name + " hits " + control.name);
             control.skinnedMeshAnimator.runtimeAnimatorController = info.AttackAbility.GetDeathAnimatorController();
             info.CurrentHits++;
+            control.GetComponent<BoxCollider>().enabled = false;
+            control.RIGID_BODY.useGravity = false;
         }
     }
 

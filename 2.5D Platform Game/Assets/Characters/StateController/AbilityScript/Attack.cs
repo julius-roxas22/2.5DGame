@@ -23,7 +23,7 @@ namespace IndieGameDev
             GameObject obj = Instantiate(Resources.Load("AttackInfo", typeof(GameObject))) as GameObject;
             AttackInfo info = obj.GetComponent<AttackInfo>();
 
-            info.ResetInfo(this);
+            info.ResetInfo(this, characterControl);
 
             if (!AttackManager.Instance.CurrentAttacks.Contains(info))
             {
@@ -50,7 +50,7 @@ namespace IndieGameDev
 
                     if (this == info.AttackAbility && !info.isRegistered)
                     {
-                        info.RegisterAttack(this, characterControl);
+                        info.RegisterAttack(this);
                     }
                 }
             }

@@ -17,17 +17,18 @@ namespace IndieGameDev
         public bool isRegistered;
         public bool isFinished;
 
-        public void ResetInfo(Attack attack)
+        public void ResetInfo(Attack attack, CharacterControl attacker)
         {
             isRegistered = false;
             isFinished = false;
             AttackAbility = attack;
+            Attacker = attacker;
         }
 
-        public void RegisterAttack(Attack attack, CharacterControl attacker)
+        public void RegisterAttack(Attack attack)
         {
             isRegistered = true;
-            Attacker = attacker;
+
             AttackAbility = attack;
             CollidingNames = attack.ColliderNames;
             MustCollide = attack.MustCollide;
