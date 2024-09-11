@@ -10,7 +10,7 @@ namespace IndieGameDev
         [SerializeField] private float BlockDistance;
         [SerializeField] private AnimationCurve SpeedGraph;
         [SerializeField] private float Speed;
-        private bool Self;
+        [SerializeField] private bool IsConstantMove;
 
         public override void OnEnterAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
         {
@@ -24,6 +24,31 @@ namespace IndieGameDev
                 animator.SetBool(TransitionParameters.Jump.ToString(), true);
             }
 
+            if (IsConstantMove)
+            {
+                ConstantMove(characterControl, stateInfo);
+            }
+            else
+            {
+                ControlledMove(characterControl, animator, stateInfo);
+            }
+        }
+
+        public override void OnExitAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
+        {
+
+        }
+
+        private void ConstantMove(CharacterControl characterControl, AnimatorStateInfo stateInfo)
+        {
+            if (!CheckFront(characterControl))
+            {
+                characterControl.MoveAbleCharacter(Speed, SpeedGraph.Evaluate(stateInfo.normalizedTime));
+            }
+        }
+
+        private void ControlledMove(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
+        {
             if (characterControl.MoveRight && characterControl.MoveLeft)
             {
                 animator.SetBool(TransitionParameters.Move.ToString(), false);
@@ -40,7 +65,7 @@ namespace IndieGameDev
             {
                 if (!CheckFront(characterControl))
                 {
-                    characterControl.transform.Translate(Vector3.forward * Speed * SpeedGraph.Evaluate(stateInfo.normalizedTime) * Time.deltaTime);
+                    characterControl.MoveAbleCharacter(Speed, SpeedGraph.Evaluate(stateInfo.normalizedTime));
                 }
                 characterControl.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
             }
@@ -49,16 +74,12 @@ namespace IndieGameDev
             {
                 if (!CheckFront(characterControl))
                 {
-                    characterControl.transform.Translate(Vector3.forward * Speed * SpeedGraph.Evaluate(stateInfo.normalizedTime) * Time.deltaTime);
+                    characterControl.MoveAbleCharacter(Speed, SpeedGraph.Evaluate(stateInfo.normalizedTime));
                 }
                 characterControl.transform.rotation = Quaternion.Euler(0f, 180f, 0f);
             }
         }
 
-        public override void OnExitAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
-        {
-
-        }
 
         private bool CheckFront(CharacterControl control)
         {
@@ -68,21 +89,38 @@ namespace IndieGameDev
                 Debug.DrawRay(o.transform.position, o.transform.forward * BlockDistance, Color.red);
                 if (Physics.Raycast(o.transform.position, o.transform.forward, out hit, BlockDistance))
                 {
-                    foreach (Collider col in control.RagdollParts)
+                    if (!control.RagdollParts.Contains(hit.collider))
                     {
-                        if (col.gameObject == hit.collider.gameObject)
+                        if (!IsBodyPart(hit.collider))
                         {
-                            Self = true;
-                            break;
+                            return true;
                         }
-                    }
-
-                    if (!Self)
-                    {
-                        return true;
                     }
                 }
             }
+            return false;
+        }
+
+        bool IsBodyPart(Collider col)
+        {
+            CharacterControl control = col.transform.root.GetComponent<CharacterControl>();
+
+            if (null == control)
+            {
+                return false;
+            }
+
+
+            if (control.gameObject == col.gameObject)
+            {
+                return false;
+            }
+
+            if (control.RagdollParts.Contains(col))
+            {
+                return true;
+            }
+
             return false;
         }
     }

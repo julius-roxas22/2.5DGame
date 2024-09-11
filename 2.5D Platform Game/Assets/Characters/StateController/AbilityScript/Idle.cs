@@ -12,6 +12,7 @@ namespace IndieGameDev
         {
             animator.SetBool(TransitionParameters.Jump.ToString(), false);
             animator.SetBool(TransitionParameters.Grounded.ToString(), true);
+            animator.SetBool(TransitionParameters.Attack.ToString(), false);
         }
 
         public override void OnUpdateAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
@@ -20,6 +21,11 @@ namespace IndieGameDev
             {
                 animator.SetBool(TransitionParameters.Move.ToString(), false);
                 return;
+            }
+
+            if (characterControl.Attack)
+            {
+                animator.SetBool(TransitionParameters.Attack.ToString(), true);
             }
 
             if (characterControl.Jump)

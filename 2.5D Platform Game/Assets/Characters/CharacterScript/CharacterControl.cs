@@ -10,6 +10,7 @@ namespace IndieGameDev
         Jump,
         ForceTransition,
         Grounded,
+        Attack,
     }
 
     public class CharacterControl : MonoBehaviour
@@ -28,6 +29,7 @@ namespace IndieGameDev
         public bool Jump;
         public bool MoveRight;
         public bool MoveLeft;
+        public bool Attack;
 
         private Rigidbody rigid;
 
@@ -137,6 +139,11 @@ namespace IndieGameDev
         private GameObject CreatePrefabSphereEdge(Vector3 position)
         {
             return Instantiate(SphereEdgePrefab, position, Quaternion.identity, transform);
+        }
+
+        public void MoveAbleCharacter(float Speed, float SpeedGraph)
+        {
+            transform.Translate(Vector3.forward * Speed * SpeedGraph * Time.deltaTime);
         }
 
         public void changeMaterial()
