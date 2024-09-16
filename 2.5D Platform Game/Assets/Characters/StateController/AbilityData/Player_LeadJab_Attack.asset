@@ -16,9 +16,10 @@ MonoBehaviour:
   EndTimeAttack: 0.54
   ColliderNames:
   - LeftHand
+  - mixamorig:LeftHand
   MustCollide: 1
   MustFaceAttacker: 0
   LethalRange: 0
   Maxhits: 1
-  DeathAnimators:
-  - {fileID: 9100000, guid: 1a3b8c8c3a166c643aac1882fbba0f93, type: 2}
+  FinishedAttack:
+  - {fileID: 0}

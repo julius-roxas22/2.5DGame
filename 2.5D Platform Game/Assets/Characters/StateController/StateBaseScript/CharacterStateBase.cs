@@ -7,11 +7,11 @@ namespace IndieGameDev
     public class CharacterStateBase : StateMachineBehaviour
     {
         private CharacterControl characterControl;
-        public List<StateData> abilityDatas = new List<StateData>();
+        public List<StateData> AbilityDatas = new List<StateData>();
 
         public override void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            foreach(StateData d in abilityDatas)
+            foreach(StateData d in AbilityDatas)
             {
                 d.OnEnterAbility(Control(animator), animator, stateInfo);
             }
@@ -19,7 +19,7 @@ namespace IndieGameDev
 
         public override void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            foreach (StateData d in abilityDatas)
+            foreach (StateData d in AbilityDatas)
             {
                 d.OnUpdateAbility(Control(animator), animator, stateInfo);
             }
@@ -27,7 +27,7 @@ namespace IndieGameDev
 
         public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
-            foreach (StateData d in abilityDatas)
+            foreach (StateData d in AbilityDatas)
             {
                 d.OnExitAbility(Control(animator), animator, stateInfo);
             }

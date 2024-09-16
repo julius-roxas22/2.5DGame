@@ -14,7 +14,7 @@ namespace IndieGameDev
         public bool MustFaceAttacker;
         public float LethalRange;
         public int Maxhits;
-        public List<RuntimeAnimatorController> DeathAnimators = new List<RuntimeAnimatorController>();
+        //public List<RuntimeAnimatorController> DeathAnimators = new List<RuntimeAnimatorController>();
         public List<AttackInfo> FinishedAttack = new List<AttackInfo>();
 
         public override void OnEnterAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
@@ -105,11 +105,11 @@ namespace IndieGameDev
             }
         }
 
-        public RuntimeAnimatorController GetDeathAnimatorController()
-        {
-            int index = Random.Range(0, DeathAnimators.Count);
-            return DeathAnimators[index];
-        }
+        //public RuntimeAnimatorController GetDeathAnimatorController()
+        //{
+        //    int index = Random.Range(0, DeathAnimators.Count);
+        //    return DeathAnimators[index];
+        //}
     }
 }
 

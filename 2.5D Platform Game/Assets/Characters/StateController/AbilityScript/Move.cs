@@ -110,7 +110,6 @@ namespace IndieGameDev
                 return false;
             }
 
-
             if (control.gameObject == col.gameObject)
             {
                 return false;

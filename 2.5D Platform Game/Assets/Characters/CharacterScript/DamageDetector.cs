@@ -87,11 +87,10 @@ namespace IndieGameDev
         private void TakeDamage(AttackInfo info)
         {
             //Debug.Log(info.Attacker.name + " hits " + control.name);
-            control.skinnedMeshAnimator.runtimeAnimatorController = info.AttackAbility.GetDeathAnimatorController();
+            control.skinnedMeshAnimator.runtimeAnimatorController = DeathAnimationManager.Instance.GetDeathAnimation(DamagePart); //info.AttackAbility.GetDeathAnimatorController();
             info.CurrentHits++;
             control.GetComponent<BoxCollider>().enabled = false;
             control.RIGID_BODY.useGravity = false;
-            Debug.Log(control.name + " hits into " + DamagePart.ToString());
         }
     }
 
