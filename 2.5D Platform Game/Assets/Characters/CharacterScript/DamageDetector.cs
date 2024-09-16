@@ -8,6 +8,7 @@ namespace IndieGameDev
     public class DamageDetector : MonoBehaviour
     {
         private CharacterControl control;
+        private GeneralBodyParts DamagePart;
 
         private void Awake()
         {
@@ -63,16 +64,20 @@ namespace IndieGameDev
 
         private bool IsCollided(AttackInfo info)
         {
-            foreach (Collider col in control.CollidingParts)
+            foreach (TriggerDetector trigger in control.GetAllTriggerDetectors())
             {
-                foreach (string colName in info.CollidingNames)
+                foreach (Collider col in trigger.CollidingParts)
                 {
-                    if (colName.Equals(col.gameObject.name))
+                    foreach (string colName in info.CollidingNames)
                     {
-                        //if (info.Attacker != control)
-                        //{
-                        //}
-                        return true;
+                        if (colName.Equals(col.gameObject.name))
+                        {
+                            //if (info.Attacker != control)
+                            //{
+                            //}
+                            DamagePart = trigger.BodyPart;
+                            return true;
+                        }
                     }
                 }
             }
@@ -86,6 +91,7 @@ namespace IndieGameDev
             info.CurrentHits++;
             control.GetComponent<BoxCollider>().enabled = false;
             control.RIGID_BODY.useGravity = false;
+            Debug.Log(control.name + " hits into " + DamagePart.ToString());
         }
     }
 

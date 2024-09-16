@@ -4,9 +4,18 @@ using UnityEngine;
 
 namespace IndieGameDev
 {
+    public enum GeneralBodyParts
+    {
+        UPPER,
+        LOWER,
+        ARM,
+        LEG
+    }
     public class TriggerDetector : MonoBehaviour
     {
         private CharacterControl owner;
+        public List<Collider> CollidingParts = new List<Collider>();
+        public GeneralBodyParts BodyPart;
 
         private void Awake()
         {
@@ -32,18 +41,18 @@ namespace IndieGameDev
                 return;
             }
 
-            if (!owner.CollidingParts.Contains(col))
+            if (!CollidingParts.Contains(col))
             {
-                owner.CollidingParts.Add(col);
+                CollidingParts.Add(col);
             }
 
         }
 
         private void OnTriggerExit(Collider attacker)
         {
-            if (owner.CollidingParts.Contains(attacker))
+            if (CollidingParts.Contains(attacker))
             {
-                owner.CollidingParts.Remove(attacker);
+                CollidingParts.Remove(attacker);
             }
         }
     }

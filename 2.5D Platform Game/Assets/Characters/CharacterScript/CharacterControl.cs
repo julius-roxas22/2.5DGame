@@ -25,7 +25,8 @@ namespace IndieGameDev
         public float PullMultiplier;
 
         public List<Collider> RagdollParts = new List<Collider>();
-        public List<Collider> CollidingParts = new List<Collider>();
+        //public List<Collider> CollidingParts = new List<Collider>();
+        private List<TriggerDetector> TriggerDetectors = new List<TriggerDetector>();
 
         public bool Jump;
         public bool MoveRight;
@@ -57,7 +58,6 @@ namespace IndieGameDev
 
             SetFaceForward(true);
 
-            SetUpRagdollParts();
             SetUpSphereEdge();
 
             if (SwitchBack)
@@ -66,8 +66,9 @@ namespace IndieGameDev
             }
         }
 
-        private void SetUpRagdollParts()
+        public void SetUpRagdollParts()
         {
+            RagdollParts.Clear();
             Collider[] colliders = GetComponentsInChildren<Collider>();
 
             foreach (Collider col in colliders)
@@ -76,10 +77,11 @@ namespace IndieGameDev
                 {
                     col.isTrigger = true;
                     RagdollParts.Add(col);
-                    if (null == GetComponent<TriggerDetector>())
+                    if (null == col.GetComponent<TriggerDetector>())
                     {
                         col.gameObject.AddComponent<TriggerDetector>();
                     }
+                    //DestroyImmediate(col.GetComponent<TriggerDetector>());
                 }
             }
         }
@@ -104,6 +106,19 @@ namespace IndieGameDev
                 col.attachedRigidbody.velocity = Vector3.zero;
                 col.isTrigger = false;
             }
+        }
+
+        public List<TriggerDetector> GetAllTriggerDetectors()
+        {
+            if (TriggerDetectors.Count == 0)
+            {
+                TriggerDetector[] Triggers = GetComponentsInChildren<TriggerDetector>();
+                foreach (TriggerDetector t in Triggers)
+                {
+                    TriggerDetectors.Add(t);
+                }
+            }
+            return TriggerDetectors;
         }
 
         private void FixedUpdate()
