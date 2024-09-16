@@ -38,5 +38,10 @@ namespace IndieGameDev
             CurrentHits = 0;
         }
 
+        private void OnDisable()
+        {
+            isFinished = true;
+        }
+
     }
 }

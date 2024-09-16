@@ -15,13 +15,16 @@ namespace IndieGameDev
         public float LethalRange;
         public int Maxhits;
         public List<RuntimeAnimatorController> DeathAnimators = new List<RuntimeAnimatorController>();
+        public List<AttackInfo> FinishedAttack = new List<AttackInfo>();
 
         public override void OnEnterAbility(CharacterControl characterControl, Animator animator, AnimatorStateInfo stateInfo)
         {
             animator.SetBool(TransitionParameters.Attack.ToString(), false);
 
-            GameObject obj = Instantiate(Resources.Load("AttackInfo", typeof(GameObject))) as GameObject;
+            GameObject obj = PoolManager.Instance.InstantiatePrefab(PoolObjectType.ATTACKINFO);
             AttackInfo info = obj.GetComponent<AttackInfo>();
+
+            obj.SetActive(true);
 
             info.ResetInfo(this, characterControl);
 
@@ -70,7 +73,7 @@ namespace IndieGameDev
                     if (this == info.AttackAbility && !info.isFinished)
                     {
                         info.isFinished = true;
-                        Destroy(info.gameObject);
+                        info.GetComponent<PoolObject>().TurnOff();
                     }
                 }
             }
@@ -83,11 +86,21 @@ namespace IndieGameDev
 
         public void ClearAttack()
         {
-            for (int i = 0; i < AttackManager.Instance.CurrentAttacks.Count; i++)
+            FinishedAttack.Clear();
+
+            foreach (AttackInfo info in AttackManager.Instance.CurrentAttacks)
             {
-                if (null == AttackManager.Instance.CurrentAttacks[i] || AttackManager.Instance.CurrentAttacks[i].isFinished)
+                if (null == info || info.isFinished)
                 {
-                    AttackManager.Instance.CurrentAttacks.RemoveAt(i);
+                    FinishedAttack.Add(info);
+                }
+            }
+
+            foreach (AttackInfo info in FinishedAttack)
+            {
+                if (AttackManager.Instance.CurrentAttacks.Contains(info))
+                {
+                    AttackManager.Instance.CurrentAttacks.Remove(info);
                 }
             }
         }
